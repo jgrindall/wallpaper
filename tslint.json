@@ -1,0 +1,12 @@
+{
+    "rules": {
+        "max-line-length": {
+            "options": [192]
+        },
+        "new-parens": true,
+        "no-arg": true,
+        "no-consecutive-blank-lines": false,
+        "no-any": true,
+        "curly": true
+    }
+}
