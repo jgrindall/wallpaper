@@ -6,7 +6,7 @@ Specify
 2. its fundamental polygon
 3. a rectangle
 
-This library will output the transformations required to cover the rectangle using the summetry group and fundamental region specified.
+This library will output the transformations required to cover the rectangle using the symmetry group and fundamental region specified.
 For example, to cover the user's screen with whatever they drew in the fundamental region.
 
 See also:
