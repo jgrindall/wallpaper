@@ -1,10 +1,25 @@
 import {Polygon, Rect, Point, RealIntersectionData, IntersectionData} from "./Types";
 import {crossNorm, fromAToB, pMinusQ} from "./Vector";
+import {sortVerticesInOrder} from "./PolygonUtils";
 
 type IntersectionDataComparator = (a:RealIntersectionData, b:RealIntersectionData) => number;
 
 const compT1:IntersectionDataComparator = (a:RealIntersectionData, b:RealIntersectionData):number => {
     return a.t1 > b.t1 ? 1 : (a.t1 < b.t1 ? -1 : 0);
+};
+
+const _eq = (p:Point, q:Point):boolean=>{
+    const EPSILON:number = 0.00000001;
+    return Math.abs(p[0] - q[0]) < EPSILON && Math.abs(p[1] - q[1]) < EPSILON;
+};
+
+const polygonHasVertex = (p:Polygon, pt:Point):boolean=>{
+    p.forEach(q=>{
+        if(_eq(pt, q)){
+            return true;
+        }
+    });
+    return false;
 };
 
 export const rectContainsPoint = (r:Rect, p:Point):boolean=>{
@@ -24,8 +39,8 @@ export const segmentIntersect = (p0:Point, q0:Point, p1:Point, q1:Point):Interse
     const p0MinusP1 = pMinusQ(p0, p1);
     const p1MinusP0 = pMinusQ(p1, p0);
     const q0MinusP0 = pMinusQ(q0, p0);
-    const t1 = crossNorm(p0MinusP1, v0) / crossNorm(v1, v0);
-    const t0 = crossNorm(p1MinusP0, v1) / crossNorm(v0, v1);
+    const t1 = crossNorm(p0MinusP1, v0) / cross;
+    const t0 = crossNorm(p1MinusP0, v1) / -cross;
     if (t0 >= 0 && t1 >= 0 && t0 <= 1 && t1 <= 1){
         const p:Point = [
             p0[0] + t0*q0MinusP0[0],
@@ -80,57 +95,45 @@ export const convexPolygonContainsPoint = (poly:Polygon, p:Point):boolean=>{
     return true;
 };
 
-export const convexPolygonContainsPoly = (container:Polygon, poly:Polygon):boolean=>{
-    const numPoints:number = poly.length;
+export const polygonArea = (p:Polygon):number =>{
+    let area:number = 0;
+    let numPoints:number = p.length;
+    if(numPoints <= 1){
+        return 0;
+    }
     for (let i:number = 0; i < numPoints; i++){
-        if(!convexPolygonContainsPoint(container, poly[i])){
-            return false;
-        }
+        let j:number = (i + 1) % numPoints;
+        area +=  (p[j][0] + p[i][0]) * (p[j][1] - p[i][1]);
     }
-    return true;
+    return Math.abs(area/2);
 };
-/*
-export const polygonContainsPoint = (poly:Polygon, p:Point):boolean=>{
-    // http://web.archive.org/web/20110314030147/http://paulbourke.net/geometry/insidepoly/
-    const r:Rect = getBoundingRect(poly);
-    if (!rectContainsPoint(r, p)) {
-        return false;
-    }
-    let counter:number = 0 ;
-    const numPoints:number = poly.length;
-    for (let i:number = 0; i < numPoints; i++) {
-        let p1:Point = poly[i], p2:Point = poly[(i + 1) % numPoints];
-        if (p[1] > Math.min(p1[1], p2[1])) {
-            if (p[1] <= Math.max(p1[1], p2[1])) {
-                if (p[0] <= Math.max(p1[0], p2[0])) {
-                    if (p1[1] != p2[1]) {
-                        const xinters:number = (p[1] - p1[1]) * (p2[0] - p1[0])/(p2[1] - p1[1]) + p1[0];
-                        if (p1[0] === p2[0] || p[0] <= xinters){
-                            counter++;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    return (counter % 2 === 1);
-    //TODO - check if the point is one of the vertices?
-};
-*/
 
-export const convexPolyPolyOverlap = (poly1:Polygon, poly2:Polygon):boolean =>{
-    const num1 = poly1.length, num2 = poly2.length;
-    for (let i = 0; i < num1; i++){
-        for (let j = 0; j < num2; j++){
-            let p1:Point = poly1[i], p2:Point = poly1[(i + 1) % num1];
-            let p3:Point = poly2[j], p4:Point = poly2[(j + 1) % num2];
-            if (segmentIntersect(p1, p2, p3, p4)){
-                return true;
-            }
+export const convexPolyPolyOverlap = (poly1:Polygon, poly2:Polygon):Polygon => {
+    const pts:Array<Point> = [];
+    const numPoints1:number = poly1.length;
+    const addPoint = p =>{
+        if(!polygonHasVertex(pts, p)){
+            pts.push(p);
         }
+    };
+    poly1.forEach(p1=>{
+        if(convexPolygonContainsPoint(poly2, p1)){
+            addPoint(p1);
+        }
+    });
+    poly2.forEach(p2=>{
+        if(convexPolygonContainsPoint(poly1, p2)){
+            addPoint(p2);
+        }
+    });
+    for(let i:number = 0; i < numPoints1; i++){
+        let j:number = (i + 1) % numPoints1;
+        const inters:Array<Point> = polygonIntersections(poly2, poly1[i], poly1[j]);
+        inters.forEach(p=>addPoint(p));
     }
-    if (convexPolygonContainsPoint(poly1, poly2[0]) || convexPolygonContainsPoint(poly2, poly1[0])){
-        return true;
-    }
-    return false;
+    return sortVerticesInOrder(pts);
+}
+
+export const convexPolyPolyNonZeroOverlap = (poly1:Polygon, poly2:Polygon):boolean => {
+    return polygonArea(convexPolyPolyOverlap(poly1, poly2)) > 0;
 };
