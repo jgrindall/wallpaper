@@ -31,7 +31,7 @@ export default class Group_p3m1 extends WallpaperGroup {
             [baseLength*RT3/2, baseLength/2]
         ];
     }
-    private getBaseTransforms(): Array<Matrix>{
+    protected getBaseTransforms(): Array<Matrix>{
         const baseLength:number = 100;
         const p:Point = [baseLength*RT3/2, baseLength/2];
         const p2:Point = [baseLength*RT3/2, baseLength/2 + baseLength];
@@ -63,7 +63,7 @@ export default class Group_p3m1 extends WallpaperGroup {
         ];
 
     }
-    private getBaseRect():Rect{
+    protected getBaseRect():Rect{
         const baseLength = 100;
         return [
             [0,                  0],
@@ -72,7 +72,7 @@ export default class Group_p3m1 extends WallpaperGroup {
             [0,                  3*baseLength]
         ];
     }
-    private getTransformToBase():Matrix{
+    protected getTransformToBase():Matrix{
         const orderedByX:Polygon = orderByX(this._polygon);
         const orderedByY:Polygon = orderByY([
             orderedByX[0],
@@ -86,33 +86,5 @@ export default class Group_p3m1 extends WallpaperGroup {
             ],
             this.getBasePolygon()
         );
-    }
-    public coverRectangle(rect:Rect):Array<PolygonTransform>{
-        const toBase:Matrix = this.getTransformToBase();
-        const transformedRect:Polygon = applyToPoints(toBase, rect);
-        const baseRect:Rect = this.getBaseRect();
-        const cover:Array<Matrix> = getTranslationsToCoverPolygon(baseRect, transformedRect);
-        const ts = getProduct(
-            this.getBaseTransforms(),
-            cover
-        );
-        const conjugated = conjugates(toBase, ts);
-        const data:Array<PolygonTransform> = [];
-        conjugated.forEach(t=>{
-            const transformedPoly = applyToPoints(t, this._polygon);
-            if(convexPolyPolyNonZeroOverlap(rect, transformedPoly)){
-                data.push({
-                    t: t,
-                    poly0:this._polygon,
-                    poly1:transformedPoly
-                });
-
-            }
-        });
-        return data;
-    }
-    public generate():void{
-        const t = this.getTransformToBase();
-        console.log(t);
     }
 };
