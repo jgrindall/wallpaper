@@ -1,5 +1,5 @@
 import {compose} from "./Transforms";
-import {Matrix} from  "transformation-matrix";
+import {Matrix} from  "./Types";
 
 class MatrixUtils{
 

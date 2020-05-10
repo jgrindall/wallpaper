@@ -1,6 +1,6 @@
 import _ from "lodash";
-import {Matrix, compose as tmcompose, fromObject, inverse, applyToPoint} from "transformation-matrix";
-import {Polygon, Point} from "./Types";
+import {compose as tmcompose, fromObject, inverse} from "transformation-matrix";
+import {Polygon, Point, Matrix, applyToPoint} from "./Types";
 
 const _eq = (a:number, b:number):boolean=>{
     const EPSILON:number = 0.00000001;

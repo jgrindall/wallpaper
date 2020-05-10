@@ -1,9 +1,10 @@
 
 import {rectContainsPoint, segmentIntersect, convexPolygonContainsPoint,
-    polygonIntersections, convexPolyPolyOverlap, convexPolygonContainsPoly} from "../src/PolygonIntersection";
-import {Polygon, Rect, Point} from "../src/Types";
+    convexPolyPolyNonZeroOverlap, convexPolyPolyOverlap, polygonArea} from "../src/PolygonIntersection";
+import {Polygon, Rect} from "../src/Types";
 import chai from 'chai';
 let expect = chai.expect;
+
 
 describe('test rectContainsPoint',() => {
 
@@ -26,6 +27,32 @@ describe('test segmentIntersect',() => {
     expect(int0.p).to.be.equalTo([0.5, 0]);
     expect(int0.t0).to.equal(0.5);
     expect(int0.t1).to.equal(0.5);
+
+    const int1 = segmentIntersect([0, 0], [1, 0], [0, -0.5], [0, 0.5]);
+    expect(int1.p).to.be.equalTo([0, 0]);
+    expect(int1.t0).to.equal(0);
+    expect(int1.t1).to.equal(0.5);
+
+});
+
+describe('test polygonArea',() => {
+    const poly1:Polygon = [
+        [0, 0],
+        [0, 1],
+        [1, 1],
+        [1, 0]
+    ];
+    expect(polygonArea(poly1)).to.equal(1);
+
+    const poly2:Polygon = [
+        [0, 0],
+        [0, 10],
+        [10, 10],
+        [20, 5],
+        [10, 0]
+    ];
+    expect(polygonArea(poly2)).to.equal(150);
+
 });
 
 describe('test polygonContainsPoint',() => {
@@ -43,7 +70,7 @@ describe('test polygonContainsPoint',() => {
     expect(convexPolygonContainsPoint(poly, [2, 2])).to.equal(false);
 });
 
-describe('test convexPolygonContainsPoly',() => {
+describe('test convexPolyPolyNonZeroOverlap',() => {
     const container:Polygon = [
         [0, 0],
         [0, 1],
@@ -56,109 +83,65 @@ describe('test convexPolygonContainsPoly',() => {
         [0.6, 0.6],
         [0.6, 0.4]
     ];
-    expect(convexPolygonContainsPoly(container, poly0)).to.equal(true);
-    expect(convexPolygonContainsPoly(poly0, container)).to.equal(false);
+
     const poly1:Polygon = [
         [0, 1],
         [0, 2],
         [1, 2],
         [1, 1]
     ];
-    expect(convexPolygonContainsPoly(container, poly1)).to.equal(false);
-    expect(convexPolygonContainsPoly(poly1, container)).to.equal(false);
+
     const poly2:Polygon = [
         [0.5, 0.4],
         [0.5, 0.6],
         [1.5, 0.6],
         [1.5, 0.4]
     ];
-    expect(convexPolygonContainsPoly(container, poly2)).to.equal(false);
-    expect(convexPolygonContainsPoly(poly2, container)).to.equal(false);
-});
 
-describe('test polygonIntersections',() => {
-    const poly:Polygon = [
-        [0, 0],
-        [0, 1],
-        [1, 1],
-        [1, 0]
-    ];
-    const int0:Array<Point> = polygonIntersections(poly, [-10, 0.5], [10, 0.5]);
-    expect(int0.length).to.equal(2);
-    expect(int0[0][0]).to.equal(0);
-    expect(int0[0][1]).to.equal(0.5);
-    expect(int0[1][0]).to.equal(1);
-    expect(int0[1][1]).to.equal(0.5);
-
-    const int1:Array<Point> = polygonIntersections(poly, [10, 0.5], [-10, 0.5]);
-    expect(int1.length).to.equal(2);
-    expect(int1[0][0]).to.equal(1);
-    expect(int1[0][1]).to.equal(0.5);
-    expect(int1[1][0]).to.equal(0);
-    expect(int1[1][1]).to.equal(0.5);
-});
-
-describe('test polygonIntersections 1',() => {
-    const poly0:Polygon = [
-        [0, 0],
-        [0, 1],
-        [1, 1],
-        [1, 0]
-    ];
-    const poly1:Polygon = [
+    const poly3:Polygon = [
         [0.5, 0.5],
         [0.5, 1.5],
         [1.5, 1.5],
         [1.5, 0.5]
     ];
-    expect(convexPolyPolyOverlap(poly0, poly1)).to.equal(true);
-});
 
-describe('test polygonIntersections 2',() => {
-    const poly0:Polygon = [
-        [0, 0],
-        [0, 1],
-        [1, 1],
-        [1, 0]
-    ];
-    const poly1:Polygon = [
+    const poly4:Polygon = [
         [1, 1],
         [1, 2],
         [2, 2],
         [2, 1]
     ];
-    expect(convexPolyPolyOverlap(poly0, poly1)).to.equal(true);
-});
 
-describe('test polygonIntersections 3',() => {
-    const poly0:Polygon = [
-        [0, 0],
-        [0, 1],
-        [1, 1],
-        [1, 0]
-    ];
-    const a = 0.001;
-    const poly1:Polygon = [
+    let a = 0.001;
+    const poly5:Polygon = [
         [1 + a, 1 + a],
         [1 + a, 2 + a],
         [2 + a, 2 + a],
         [2 + a,  + a]
     ];
-    expect(convexPolyPolyOverlap(poly0, poly1)).to.equal(false);
-});
 
-describe('test polygonIntersections 4',() => {
-    const poly0:Polygon = [
-        [1.4, 2.5],
-        [2.5, 3.6],
-        [3.6, 2.5],
-        [2.5, 1.4]
+    a = -0.001;
+    const poly6:Polygon = [
+        [1 + a, 1 + a],
+        [1 + a, 2 + a],
+        [2 + a, 2 + a],
+        [2 + a, 1 + a]
     ];
-    const poly1:Polygon = [
-        [1, 1],
-        [1, 2],
-        [2, 2],
-        [2, 1]
-    ];
-    expect(convexPolyPolyOverlap(poly0, poly1)).to.equal(true);
+
+    const overlap0 = (convexPolyPolyOverlap(container, poly0));
+    const overlap1 = (convexPolyPolyOverlap(container, poly1));
+    const overlap2 = (convexPolyPolyOverlap(container, poly2));
+    const overlap3 = (convexPolyPolyOverlap(container, poly3));
+    const overlap4 = (convexPolyPolyOverlap(container, poly4));
+    const overlap5 = (convexPolyPolyOverlap(container, poly5));
+    const overlap6 = (convexPolyPolyOverlap(container, poly6));
+
+    expect(convexPolyPolyNonZeroOverlap(container, poly0)).to.equal(true);
+    expect(convexPolyPolyNonZeroOverlap(container, poly1)).to.equal(false);
+    expect(convexPolyPolyNonZeroOverlap(container, poly2)).to.equal(true);
+    expect(convexPolyPolyNonZeroOverlap(container, poly3)).to.equal(true);
+    expect(convexPolyPolyNonZeroOverlap(container, poly4)).to.equal(false);
+    expect(convexPolyPolyNonZeroOverlap(container, poly5)).to.equal(false);
+    expect(convexPolyPolyNonZeroOverlap(container, poly6)).to.equal(true);
+
 });

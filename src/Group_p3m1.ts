@@ -1,11 +1,10 @@
-import {getIdentity, getReflection, getProduct, compose, conjugates, conjugate} from "./Transforms";
+import {getIdentity, getReflection, getProduct, compose, conjugates} from "./Transforms";
 import {isEquilateralTriangle, orderByX, orderByY} from "./PolygonUtils";
 import IValidator from "./IValidator";
 import WallpaperGroup from "./WallpaperGroup";
-import {Polygon, Point, Rect, PolygonTransform} from "./Types";
+import {Polygon, Point, Rect, PolygonTransform, Matrix, applyToPoints, fromTriangles} from "./Types";
 import {getTranslationsToCoverPolygon} from "./PolygonCovering";
-import {Matrix, fromTriangles, applyToPoints} from  "transformation-matrix";
-import {convexPolygonContainsPoly, convexPolyPolyOverlap} from "./PolygonIntersection";
+import {convexPolyPolyNonZeroOverlap} from "./PolygonIntersection";
 
 const RT3 = Math.sqrt(3);
 
@@ -101,7 +100,7 @@ export default class Group_p3m1 extends WallpaperGroup {
         const data:Array<PolygonTransform> = [];
         conjugated.forEach(t=>{
             const transformedPoly = applyToPoints(t, this._polygon);
-            if(convexPolygonContainsPoly(rect, transformedPoly) || convexPolyPolyOverlap(rect, transformedPoly)){
+            if(convexPolyPolyNonZeroOverlap(rect, transformedPoly)){
                 data.push({
                     t: t,
                     poly0:this._polygon,

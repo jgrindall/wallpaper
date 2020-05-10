@@ -1,6 +1,6 @@
 import {isIdentity, getRotationAboutOrigin, getRotation, getTranslation, getIdentity, getReflection,
     getReflectionOrigin, areEqual, getScale, determinant, getMatrix, compose, getProduct, conjugate, conjugates} from "../src/Transforms";
-import {Point, Matrix, applyToPoint} from "transformation-matrix";
+import {Point, Matrix, applyToPoint} from "../src/Types";
 import { expect } from 'chai';
 
 const EPS = 0.000001;

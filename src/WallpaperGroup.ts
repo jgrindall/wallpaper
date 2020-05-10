@@ -1,7 +1,6 @@
 import _ from "lodash";
 import IValidator from "./IValidator";
-import {Polygon, PolygonTransform} from "./Types";
-import {Matrix} from "transformation-matrix";
+import {Polygon, PolygonTransform, Matrix} from "./Types";
 
 class WallpaperGroup {
     protected _polygon: Polygon;

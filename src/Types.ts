@@ -1,4 +1,4 @@
-import {Point, Matrix} from "transformation-matrix";
+import {Point, Matrix, applyToPoints, applyToPoint, fromTriangles} from "transformation-matrix";
 
 type Polygon = Array<Point>;
 
@@ -25,5 +25,8 @@ export {
     Rect,
     RealIntersectionData,
     IntersectionData,
-    PolygonTransform
+    PolygonTransform,
+    applyToPoint,
+    applyToPoints,
+    fromTriangles
 }

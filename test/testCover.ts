@@ -8,9 +8,6 @@ import chaiArrays from 'chai-arrays';
 let expect = chai.expect;
 chai.use(chaiArrays);
 
-const EPS = 0.0000001;
-export type OrderByIndexFn = (prev:Array<number>, next:Array<number>) => boolean;
-
 describe('test getTranslationsToCoverRect',() => {
     const r0:Rect = [
         [1.5, 1.5],
@@ -27,7 +24,6 @@ describe('test getTranslationsToCoverRect',() => {
     const ts0 = getTranslationsToCoverRect(r0, p0);
     expect(ts0.length).to.equal(1);
     expect(isIdentity(ts0[0])).to.equal(true);
-
     const r1:Rect = [
         [1, 1],
         [1, 2],
@@ -45,6 +41,8 @@ describe('test getTranslationsToCoverRect',() => {
 
     expect(areEqual(ts1[0], getTranslation(2, 2))).to.equal(true);
     expect(areEqual(ts1[8], getTranslation(4, 4))).to.equal(true);
+
+
 
     const r2:Rect = [
         [1, 1],
@@ -127,8 +125,8 @@ describe('test getTranslationsToCoverPolygon',() => {
         [1, 0]
     ];
     const ts2 = getTranslationsToCoverPolygon(r2, p2);
-    expect(ts2.length).to.equal(9);
-    expect(areEqual(ts2[0], getTranslation(1, 1))).to.equal(true);
+    expect(ts2.length).to.equal(5);
+    expect(areEqual(ts2[0], getTranslation(1, 2))).to.equal(true);
 
 
     const p3:Polygon = [
@@ -159,6 +157,5 @@ describe('test getTranslationsToCoverPolygon',() => {
         [4, 0]
     ];
     const ts4 = getTranslationsToCoverPolygon(r4, p4);
-    expect(ts4.length).to.equal(20);
-
+    expect(ts4.length).to.equal(16);
 });
