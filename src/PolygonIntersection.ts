@@ -95,6 +95,16 @@ export const convexPolygonContainsPoint = (poly:Polygon, p:Point):boolean=>{
     return true;
 };
 
+export const anyPolygonContainsPoint = (polys:Array<Polygon>, p:Point):boolean=>{
+    const numPolys:number = polys.length;
+    for (let i:number = 0; i < numPolys; i++){
+        if(convexPolygonContainsPoint(polys[i], p)){
+            return true;
+        }
+    }
+    return false;
+};
+
 export const polygonArea = (p:Polygon):number =>{
     let area:number = 0;
     let numPoints:number = p.length;
