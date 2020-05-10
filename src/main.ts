@@ -1,7 +1,7 @@
 
 import Wallpaper from "./Wallpaper";
 import WallpaperGroup from "./WallpaperGroup";
-import {Polygon, PolygonTransform, Matrix} from "./Types";
+import {Polygon, PolygonTransform, Matrix, Rect} from "./Types";
 
 const sideLength:number = 150;
 
@@ -31,7 +31,7 @@ const fundamentalPolygon: Polygon = [
 
 const g: WallpaperGroup = Wallpaper.generateGroup(Wallpaper.P3M1, fundamentalPolygon);
 
-const screen:Polygon = [
+const screen:Rect = [
     [300, 320],
     [300, 620],
     [800, 620],
