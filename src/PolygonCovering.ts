@@ -1,9 +1,8 @@
-import {Polygon, Rect} from "./Types";
+import {Polygon, Rect, applyToPoints, Matrix} from "./Types";
 import _ from "lodash";
 import {orderByX, orderByY} from "./PolygonUtils";
-import {applyToPoints, Matrix} from  "transformation-matrix";
 import {getTranslation} from "./Transforms";
-import {convexPolygonContainsPoly, convexPolyPolyOverlap} from "./PolygonIntersection";
+import {convexPolyPolyNonZeroOverlap} from "./PolygonIntersection";
 
 const isInt = (value:number) => {
   let x = parseFloat(value + '');
@@ -52,6 +51,6 @@ export const getTranslationsToCoverPolygon = (r:Rect, p:Polygon):Array<Matrix> =
     const ts =  getTranslationsToCoverRect(getBoundingRect(r), getBoundingRect(p));
     return ts.filter(t => {
         const translatedR:Polygon = applyToPoints(t, r);
-        return convexPolygonContainsPoly(p, translatedR) || convexPolyPolyOverlap(p, translatedR);
+        return convexPolyPolyNonZeroOverlap(p, translatedR);
     });
 };
