@@ -10,7 +10,18 @@ type RealIntersectionData = {
     t1: number;
 };
 
+type NumberPair = [number, number];
+type NumberPairList = Array<NumberPair>;
+
+type Segment = [Point, Point];
+
+type SegmentList = Array<Segment>;
+
 type IntersectionData = RealIntersectionData | null;
+
+type TValue = {
+    t:number;
+};
 
 type PolygonTransform = {
     poly0: Polygon;
@@ -26,6 +37,11 @@ export {
     RealIntersectionData,
     IntersectionData,
     PolygonTransform,
+    NumberPair,
+    NumberPairList,
+    Segment,
+    SegmentList,
+    TValue,
     applyToPoint,
     applyToPoints,
     fromTriangles
