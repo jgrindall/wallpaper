@@ -1,10 +1,8 @@
-import {getIdentity, getReflection, getProduct, compose, conjugates} from "./Transforms";
+import {getIdentity, getReflection, compose} from "./Transforms";
 import {isEquilateralTriangle, orderByX, orderByY} from "./PolygonUtils";
 import IValidator from "./IValidator";
 import WallpaperGroup from "./WallpaperGroup";
-import {Polygon, Point, Rect, PolygonTransform, Matrix, applyToPoints, fromTriangles} from "./Types";
-import {getTranslationsToCoverPolygon} from "./PolygonCovering";
-import {convexPolyPolyNonZeroOverlap} from "./PolygonIntersection";
+import {Polygon, Point, Rect,  Matrix, fromTriangles} from "./Types";
 
 const RT3 = Math.sqrt(3);
 
