@@ -1,7 +1,8 @@
 
 import Wallpaper from "./Wallpaper";
 import WallpaperGroup from "./WallpaperGroup";
-import {Polygon, PolygonTransform, Matrix, Rect} from "./Types";
+import {transformSegmentList} from "./Segment";
+import {Polygon, PolygonTransform, Rect, SegmentList, Segment} from "./Types";
 
 const sideLength:number = 150;
 
@@ -12,6 +13,20 @@ const ctx = canvas.getContext("2d");
 
 const clear = ()=>{
     ctx.clearRect(0, 0, canvas.width, canvas.height)
+};
+
+const drawSegs = (segs:SegmentList, strokeStyle:string)=>{
+    ctx.strokeStyle = strokeStyle;
+    ctx.beginPath();
+    let s:Segment;
+    const numPoints = segs.length;
+    for(let i = 0; i < numPoints; i++){
+        s = segs[i];
+        ctx.moveTo(s[0][0], s[0][1]);
+        ctx.lineTo(s[1][0], s[1][1]);
+        ctx.closePath();
+        ctx.stroke();
+    }
 };
 
 const drawPoly = (p:Polygon, strokeStyle:string, fillStyle:string)=>{
@@ -29,9 +44,9 @@ const drawPoly = (p:Polygon, strokeStyle:string, fillStyle:string)=>{
 };
 
 const fundamentalPolygon: Polygon = [
-    [0, 0],
-    [0, sideLength],
-    [sideLength*RT3/2, sideLength/2]
+    [300, 300],
+    [300, 300 + sideLength],
+    [300 + sideLength*RT3/2, 300 + sideLength/2]
 ];
 
 const g: WallpaperGroup = Wallpaper.generateGroup(Wallpaper.P3M1, fundamentalPolygon);
@@ -51,6 +66,14 @@ const redraw = (x:number, y:number):void=>{
     ts.forEach(t=>{
         drawPoly(t.poly1, 'rgba(50, 200, 50, 1)', 'rgba(50, 200, 50, 0.5)');
     });
+
+    const s:SegmentList = [];
+    s.push([ fundamentalPolygon[0], fundamentalPolygon[1] ]);
+    s.push([ fundamentalPolygon[1], fundamentalPolygon[2] ]);
+    s.push([ fundamentalPolygon[2], fundamentalPolygon[0] ]);
+    for(let i = 0; i < ts.length; i++){
+        drawSegs(transformSegmentList(ts[i].t, s), 'rgba(50, 20, 250, 0.75)');
+    }
 
 }
 
