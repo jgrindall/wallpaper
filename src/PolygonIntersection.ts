@@ -1,6 +1,7 @@
-import {Polygon, Rect, Point, RealIntersectionData, IntersectionData} from "./Types";
+import {Polygon, Rect, Point, Segment, SegmentList, RealIntersectionData, IntersectionData} from "./Types";
 import {crossNorm, fromAToB, pMinusQ} from "./Vector";
 import {sortVerticesInOrder} from "./PolygonUtils";
+import _ from "lodash";
 
 type IntersectionDataComparator = (a:RealIntersectionData, b:RealIntersectionData) => number;
 
@@ -9,8 +10,8 @@ const compT1:IntersectionDataComparator = (a:RealIntersectionData, b:RealInterse
 };
 
 const _eq = (p:Point, q:Point):boolean=>{
-    const EPSILON:number = 0.00000001;
-    return Math.abs(p[0] - q[0]) < EPSILON && Math.abs(p[1] - q[1]) < EPSILON;
+   const EPSILON:number = 0.00000001;
+   return Math.abs(p[0] - q[0]) < EPSILON && Math.abs(p[1] - q[1]) < EPSILON;
 };
 
 const polygonHasVertex = (p:Polygon, pt:Point):boolean=>{
@@ -56,6 +57,7 @@ export const segmentIntersect = (p0:Point, q0:Point, p1:Point, q1:Point):Interse
 };
 
 export const polygonIntersections = (poly:Polygon, a:Point, b:Point):Array<Point> => {
+    const GRID_SIZE = 100000000;
     const numPoints:number = poly.length;
     const inters:Array<RealIntersectionData> = [];
     for (let i:number = 0; i < numPoints; i++) {
@@ -67,7 +69,14 @@ export const polygonIntersections = (poly:Polygon, a:Point, b:Point):Array<Point
         }
     }
     inters.sort(compT1);
-    return inters.map( (a:RealIntersectionData) => a.p);
+    const grouped = _.groupBy(inters, (inter:RealIntersectionData) => {
+        return Math.round(inter.t1*GRID_SIZE);
+    });
+    const pts = [];
+    Object.keys(grouped).forEach(key => {
+        pts.push(grouped[key][0].p);
+    });
+    return pts;
 };
 
 export const convexPolygonContainsPoint = (poly:Polygon, p:Point):boolean=>{
@@ -146,4 +155,12 @@ export const convexPolyPolyOverlap = (poly1:Polygon, poly2:Polygon):Polygon => {
 
 export const convexPolyPolyNonZeroOverlap = (poly1:Polygon, poly2:Polygon):boolean => {
     return polygonArea(convexPolyPolyOverlap(poly1, poly2)) > 0;
+};
+
+export const polygonsIntersectSegment = (polys:Array<Polygon>, seg:Segment):SegmentList =>{
+    return polys.map( (p:Polygon) =>{
+        const inters:Array<Point> = polygonIntersections(p, seg[0], seg[1]);
+        const s:Segment = inters.length === 0 ? null : [inters[0], inters[1]];
+        return s;
+    });
 };

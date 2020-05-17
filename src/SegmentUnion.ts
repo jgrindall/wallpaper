@@ -1,4 +1,4 @@
-import {NumberPairList, NumberPair, Segment, SegmentList} from "./Types";
+import {RealSegmentList, RealSegment, Segment, SegmentList} from "./Types";
 import {getTForPointOnSegment, segmentsAreColinear, getPointForTOnSegment} from "./Segment";
 import {compT} from "./NumPairComparator";
 import _ from "lodash";
@@ -27,9 +27,9 @@ export const groupColinear = (segs:SegmentList):Array<SegmentList>=>{
     return gps;
 };
 
-export const unionAxis = (arr:NumberPairList):NumberPairList => {
+export const unionAxis = (arr:RealSegmentList):RealSegmentList => {
     const points = [];
-    arr.forEach( (tpair:NumberPair, i:number) => {
+    arr.forEach( (tpair:RealSegment, i:number) => {
         const t0:number = tpair[0];
         const t1:number = tpair[1];
         if(t0 != t1){
@@ -53,7 +53,7 @@ export const unionAxis = (arr:NumberPairList):NumberPairList => {
     if(numPoints === 2){
         return [ [points[0], points[1]] ];
     }
-    let union:NumberPairList = [];
+    let union:RealSegmentList = [];
     let inSegments:Array<number> = [0];
     let currentT:number = points[0].t;
     for(let i:number = 1; i < numPoints; i++){
@@ -88,15 +88,15 @@ export const unionColinear = (segs:SegmentList):SegmentList=>{
         return segs;
     }
     const index:Segment = segs[0];
-    const convertToTValues = (s:Segment):NumberPair =>{
+    const convertToTValues = (s:Segment):RealSegment =>{
         return [
             getTForPointOnSegment(index, s[0]),
             getTForPointOnSegment(index, s[1])
         ];
     }
-    const tValues:NumberPairList = segs.map(convertToTValues);
-    const unionT:NumberPairList = unionAxis(tValues);
-    return unionT.map( (pair:NumberPair) =>{
+    const tValues:RealSegmentList = segs.map(convertToTValues);
+    const unionT:RealSegmentList = unionAxis(tValues);
+    return unionT.map( (pair:RealSegment) =>{
         const seg:Segment = [
             getPointForTOnSegment(index, pair[0]),
             getPointForTOnSegment(index, pair[1])

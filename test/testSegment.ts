@@ -1,7 +1,7 @@
 
 import { expect } from 'chai';
 import _ from "lodash";
-import {Point, NumberPairList, Segment, SegmentList} from "../src/Types";
+import {Point, RealSegmentList, Segment, SegmentList} from "../src/Types";
 import {pointIsOnSegmentExtended, segmentsAreColinear, getTForPointOnSegment} from "../src/Segment";
 import {groupColinear, unionColinear, unionSegments, unionAxis} from "../src/SegmentUnion";
 
@@ -106,7 +106,7 @@ describe('union',() => {
 
     it('should union axis - random segments', () => {
 
-        const random:NumberPairList = [  [0, 10] ];
+        const random:RealSegmentList = [  [0, 10] ];
         for(let i = 0; i < 50; i++){
             const shuffled = _.shuffle(_.range(0, 10));
             random.push([shuffled[0], shuffled[1]]);
@@ -119,7 +119,7 @@ describe('union',() => {
     });
 
     it('should union axis - random disjoint segments', () => {
-        const random2:NumberPairList = [  [0, 10] , [20, 30]];
+        const random2:RealSegmentList = [  [0, 10] , [20, 30]];
         for(let i = 0; i < 50; i++){
             const shuffled = _.shuffle(_.range(0, 10));
             random2.push([shuffled[0], shuffled[1]]);

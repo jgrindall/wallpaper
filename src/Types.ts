@@ -1,5 +1,8 @@
 import {Point, Matrix, applyToPoints, applyToPoint, fromTriangles} from "transformation-matrix";
 
+type Segment = [Point, Point];
+type SegmentList = Array<Segment>;
+
 type Polygon = Array<Point>;
 
 type Rect = [Point, Point, Point, Point];
@@ -10,12 +13,9 @@ type RealIntersectionData = {
     t1: number;
 };
 
-type NumberPair = [number, number];
-type NumberPairList = Array<NumberPair>;
+type RealSegment = [number, number];
 
-type Segment = [Point, Point];
-
-type SegmentList = Array<Segment>;
+type RealSegmentList = Array<RealSegment>;
 
 type IntersectionData = RealIntersectionData | null;
 
@@ -37,8 +37,8 @@ export {
     RealIntersectionData,
     IntersectionData,
     PolygonTransform,
-    NumberPair,
-    NumberPairList,
+    RealSegment,
+    RealSegmentList,
     Segment,
     SegmentList,
     TValue,

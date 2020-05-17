@@ -1,7 +1,7 @@
 import _ from "lodash";
 import IValidator from "./IValidator";
 import {Polygon, PolygonTransform, Matrix, Rect, applyToPoints} from "./Types";
-import {getIdentity, getReflection, getProduct, compose, conjugates} from "./Transforms";
+import {getProduct, conjugates} from "./Transforms";
 import {getTranslationsToCoverPolygon} from "./PolygonCovering";
 import {convexPolyPolyNonZeroOverlap, anyPolygonContainsPoint} from "./PolygonIntersection";
 import {getCentreOfMass} from "./PolygonUtils";

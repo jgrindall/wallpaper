@@ -62,6 +62,6 @@ describe('p3m1 should cover',() => {
             [100*RT3, 0]
         ];
         const a:Array<PolygonTransform> = g.coverRectangle(screen);
-        expect(a.length).to.equal(24);
+        expect(a.length).to.equal(23);
     });
 });
