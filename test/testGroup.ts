@@ -46,8 +46,6 @@ describe('groups',() => {
     });
 });
 
-
-
 describe('p3m1 should cover',() => {
     it('should return a group', () => {
         const p:Polygon = [
@@ -64,6 +62,6 @@ describe('p3m1 should cover',() => {
             [100*RT3, 0]
         ];
         const a:Array<PolygonTransform> = g.coverRectangle(screen);
-        expect(a.length).to.equal(14);
+        expect(a.length).to.equal(24);
     });
 });
