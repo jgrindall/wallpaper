@@ -1,6 +1,6 @@
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 const path = require('path');
-
 const ROOT = path.resolve( __dirname, 'src' );
 const DESTINATION = path.resolve( __dirname, 'dist' );
 
@@ -31,6 +31,14 @@ module.exports = {
     module: {
         rules: [
             {
+               use: 'babel-loader',
+               test: /\.jsx?$/,
+               resolve: {
+                 extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
+               },
+               exclude: /node_modules/
+            },
+            {
                 enforce: 'pre',
                 test: /\.js$/,
                 use: 'source-map-loader'
@@ -42,13 +50,28 @@ module.exports = {
                 use: 'tslint-loader'
             },
             {
-                test: /\.ts$/,
-                exclude: [ /node_modules/ ],
-                use: 'awesome-typescript-loader'
+                test: /\.tsx?$/,
+            	use: {
+            		loader: "ts-loader",
+            		options: {
+            			configFile: path.resolve( __dirname, 'tsconfig.json' ),
+            			appendTsSuffixTo: [/\.vue$/]
+            		}
+            	}
+            },
+            {
+                test: /\.css$/i,
+                use: ['style-loader', 'css-loader'],
+            },
+            {
+              test: /\.vue$/,
+              loader: 'vue-loader'
             }
         ]
     },
-
+    plugins: [
+      new VueLoaderPlugin()
+    ],
     devtool: 'cheap-module-source-map',
     devServer: {}
 };
