@@ -5,10 +5,11 @@
 </template>
 
 <script lang="ts">
-    import Wallpaper from "./Wallpaper";
-    import WallpaperGroup from "./WallpaperGroup";
-    import {transformSegmentList} from "./Segment";
-    import {Polygon, PolygonTransform, Rect, SegmentList, Segment} from "./Types";
+    import Wallpaper from "../Wallpaper";
+    import WallpaperGroup from "../WallpaperGroup";
+    import {transformSegmentList} from "../Segment";
+    import {Polygon, PolygonTransform, Rect, SegmentList, Segment, Point} from "../Types";
+    import {fundamentalPolygonIntersections} from "../PolygonIntersection";
     export default {
       mounted(){
           console.log('d mounted');
@@ -82,11 +83,11 @@
               clear();
               drawPoly(screen, 'rgba(100, 100, 100, 1)', 'rgba(100, 100, 100, 0.5)');
               drawPoly(fundamentalPolygon, 'rgba(200, 0, 0, 1)', 'rgba(200, 0, 0, 0.5)');
-              drawPts(fundamentalPolygon, 'rgba(50, 50, 0, 1)', 'rgba(50, 50, 0, 0.9)');
               const ts:Array<PolygonTransform> = g.coverRectangle(screen);
 
               ts.forEach(t=>{
                   drawPoly(t.poly1, 'rgba(50, 200, 50, 1)', 'rgba(50, 200, 50, 0.5)');
+                  drawPts(t.poly1, 'rgba(50, 50, 0, 1)', 'rgba(50, 50, 0, 0.9)');
               });
 
               const s:SegmentList = [];
@@ -97,9 +98,23 @@
                   drawSegs(transformSegmentList(ts[i].t, s), 'rgba(50, 20, 250, 0.75)');
               }
 
+              const appendSegment = (p:Point)=>{
+                  const s:SegmentList = fundamentalPolygonIntersections(ts, [fundamentalPolygon[0], p]);
+                  console.log(s);
+                  for(let i = 0; i < ts.length; i++){
+                      drawSegs(transformSegmentList(ts[i].t, s), 'rgba(50, 20, 250, 0.75)');
+                  }
+              };
+
+              const p:Point = [600, 200];
+
+              appendSegment(p);
+
           }
 
           redraw(230, 250);
+
+
 
           /**
 
