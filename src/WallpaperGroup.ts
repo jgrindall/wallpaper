@@ -1,6 +1,7 @@
-import _ from "lodash";
+import * as _ from "lodash";
 import IValidator from "./IValidator";
 import {Polygon, PolygonTransform, Matrix, Rect, applyToPoints} from "./Types";
+import {inverse} from "transformation-matrix";
 import {getProduct, conjugates} from "./Transforms";
 import {getTranslationsToCoverPolygon} from "./PolygonCovering";
 import {convexPolyPolyNonZeroOverlap, anyPolygonContainsPoint} from "./PolygonIntersection";
@@ -46,7 +47,8 @@ class WallpaperGroup {
                     data.push({
                         t: t,
                         poly0:this._polygon,
-                        poly1:transformedPoly
+                        poly1:transformedPoly,
+                        tinv:inverse(t)
                     });
                     polys.push(transformedPoly);
                 }

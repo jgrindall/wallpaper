@@ -1,5 +1,5 @@
 import {Polygon, Rect, applyToPoints, Matrix} from "./Types";
-import _ from "lodash";
+import * as _ from "lodash";
 import {orderByX, orderByY} from "./PolygonUtils";
 import {getTranslation} from "./Transforms";
 import {convexPolyPolyNonZeroOverlap} from "./PolygonIntersection";

@@ -1,7 +1,7 @@
-import {Polygon, Rect, Point, Segment, SegmentList, RealIntersectionData, IntersectionData} from "./Types";
+import {Polygon, Rect, Point, Segment, Matrix, SegmentList, RealIntersectionData, IntersectionData, PolygonTransform, applyToPoint} from "./Types";
 import {crossNorm, fromAToB, pMinusQ} from "./Vector";
 import {sortVerticesInOrder} from "./PolygonUtils";
-import _ from "lodash";
+import * as _ from "lodash";
 
 type IntersectionDataComparator = (a:RealIntersectionData, b:RealIntersectionData) => number;
 
@@ -160,7 +160,23 @@ export const convexPolyPolyNonZeroOverlap = (poly1:Polygon, poly2:Polygon):boole
 export const polygonsIntersectSegment = (polys:Array<Polygon>, seg:Segment):SegmentList =>{
     return polys.map( (p:Polygon) =>{
         const inters:Array<Point> = polygonIntersections(p, seg[0], seg[1]);
-        const s:Segment = inters.length === 0 ? null : [inters[0], inters[1]];
+        const s:Segment = inters.length === 2 ? [inters[0], inters[1]] : null;
         return s;
     });
+};
+
+export const fundamentalPolygonIntersections = (ts:Array<PolygonTransform>, seg:Segment):SegmentList => {
+    const polygons:Array<Polygon> = ts.map(t => t.poly1);
+    const fundamentalSegs:SegmentList = [];
+    const intersections:SegmentList = polygonsIntersectSegment(polygons, seg);
+    console.log(intersections);
+    for(let i = 0; i < intersections.length; i++){
+        const seg:Segment = intersections[i];
+        if(seg){
+            const tinv:Matrix = ts[i].tinv;
+            const fundamentalSeg:Segment = [applyToPoint(tinv, seg[0]), applyToPoint(tinv, seg[1])];
+            fundamentalSegs.push(fundamentalSeg);
+        }
+    }
+    return fundamentalSegs;
 };

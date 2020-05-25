@@ -27,6 +27,7 @@ type PolygonTransform = {
     poly0: Polygon;
     poly1: Polygon;
     t: Matrix;
+    tinv:Matrix;
 };
 
 export {

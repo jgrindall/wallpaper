@@ -1,9 +1,9 @@
 
 import { expect } from 'chai';
-import _ from "lodash";
+import * as _ from "lodash";
 import {Point, RealSegmentList, Segment, SegmentList} from "../src/Types";
 import {pointIsOnSegmentExtended, segmentsAreColinear, getTForPointOnSegment} from "../src/Segment";
-import {groupColinear, unionColinear, unionSegments, unionAxis} from "../src/SegmentUnion";
+import {groupColinear, unionColinear, unionAxis} from "../src/SegmentUnion";
 
 describe('segments',() => {
     it('should detect point on segment', () => {

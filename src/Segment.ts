@@ -1,6 +1,6 @@
 import {Point, Segment, Matrix, applyToPoint, SegmentList} from "./Types";
 import {crossNorm, fromAToB, dot, getLengthSqr} from "./Vector";
-import _ from "lodash";
+import * as _ from "lodash";
 
 const _eq = (a:number, b:number):boolean=>{
     const EPSILON:number = 0.00000001;

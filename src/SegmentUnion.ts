@@ -1,7 +1,7 @@
 import {RealSegmentList, RealSegment, Segment, SegmentList} from "./Types";
 import {getTForPointOnSegment, segmentsAreColinear, getPointForTOnSegment} from "./Segment";
 import {compT} from "./NumPairComparator";
-import _ from "lodash";
+import * as _ from "lodash";
 
 const _eq = (a:number, b:number):boolean=>{
     const EPSILON:number = 0.00000001;

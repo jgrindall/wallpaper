@@ -1,4 +1,4 @@
-import _ from "lodash";
+import * as _ from "lodash";
 import {compose as tmcompose, fromObject, inverse} from "transformation-matrix";
 import {Polygon, Point, Matrix, applyToPoint} from "./Types";
 

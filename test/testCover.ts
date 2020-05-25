@@ -2,7 +2,7 @@
 import {getTranslationsToCoverRect, getTranslationsToCoverPolygon} from "../src/PolygonCovering";
 import {isIdentity, areEqual, getTranslation} from "../src/Transforms";
 import {Polygon, Rect} from "../src/Types";
-import chai from 'chai';
+import * as chai from 'chai';
 import chaiArrays from 'chai-arrays';
 
 let expect = chai.expect;

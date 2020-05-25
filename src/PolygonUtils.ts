@@ -1,6 +1,6 @@
 import {PointComparator, compX, compY, getCompAngle} from "./PointComparator";
 import {Polygon, Rect, Point} from "./Types";
-import _ from "lodash";
+import * as _ from "lodash";
 
 const _eq = (a:number, b:number):boolean=>{
     const EPSILON:number = 0.00000001;

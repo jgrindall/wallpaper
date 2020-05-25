@@ -2,7 +2,7 @@
 import {orderBy, isEquilateralTriangle, getBoundingRect, orderByX, orderByY, getCentreOfMass, sortVerticesInOrder, wrapArray} from "../src/PolygonUtils";
 import {compX, compY} from "../src/PointComparator";
 import {Polygon, Point} from "../src/Types";
-import chai from 'chai';
+import * as chai from 'chai';
 import chaiArrays from 'chai-arrays';
 
 let expect = chai.expect;
