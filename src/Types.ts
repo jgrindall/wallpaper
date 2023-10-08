@@ -1,6 +1,14 @@
 import {Point, Matrix, applyToPoints, applyToPoint, fromTriangles} from "transformation-matrix";
 
 type Segment = [Point, Point];
+
+type Arc = {
+    center:Point,
+    extremity:Point,
+    angle0:number,
+    angle1:number
+};
+
 type SegmentList = Array<Segment>;
 
 type Polygon = Array<Point>;
@@ -35,6 +43,7 @@ export {
     Matrix,
     Point,
     Rect,
+    Arc,
     RealIntersectionData,
     IntersectionData,
     PolygonTransform,

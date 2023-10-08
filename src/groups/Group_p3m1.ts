@@ -1,8 +1,8 @@
-import {getIdentity, getReflection, compose} from "./Transforms";
-import {isEquilateralTriangle, orderByX, orderByY} from "./PolygonUtils";
-import IValidator from "./IValidator";
-import WallpaperGroup from "./WallpaperGroup";
-import {Polygon, Point, Rect,  Matrix, fromTriangles} from "./Types";
+import {getIdentity, getReflection, compose} from "../Transforms";
+import {isEquilateralTriangle, orderByX, orderByY} from "../PolygonUtils";
+import IValidator from "../IValidator";
+import WallpaperGroup from "../WallpaperGroup";
+import {Polygon, Point, Rect,  Matrix, fromTriangles} from "../Types";
 
 const RT3 = Math.sqrt(3);
 

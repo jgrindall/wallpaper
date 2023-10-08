@@ -1,5 +1,5 @@
 
-import Group_p3m1 from "./Group_p3m1";
+import Group_p3m1 from "./groups/Group_p3m1";
 import WallpaperGroup from "./WallpaperGroup";
 import {Polygon} from "./Types";
 

@@ -42,12 +42,17 @@ export const segmentsAreColinear = (seg0: Segment, seg1:Segment): boolean =>{
     return pointIsOnSegmentExtended(seg0, seg1[0]) && pointIsOnSegmentExtended(seg0, seg1[1]);
 };
 
+export const getSegmentTransformer = (t:Matrix):(Segment) => Segment => {
+    return (s:Segment) => [
+        applyToPoint(t, s[0]),
+        applyToPoint(t, s[1])
+    ];
+};
+
 export const transformSegment = (t:Matrix, s:Segment):Segment =>{
-    const p0:Point = applyToPoint(t, s[0]);
-    const p1:Point = applyToPoint(t, s[1]);
-    return [p0, p1];
+    return getSegmentTransformer(t)(s);
 };
 
 export const transformSegmentList = (t:Matrix, segs:SegmentList):SegmentList =>{
-    return segs.map(seg => transformSegment(t, seg));
+    return segs.map(getSegmentTransformer(t));
 };

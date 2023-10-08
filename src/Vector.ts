@@ -14,6 +14,15 @@ export const dot = (p: Point, q: Point): number=>{
     return p[0]*q[0] + p[1]*q[1];
 };
 
+export const fromAToBWithFraction = (a:Point, b:Point, frac:number):Point=>{
+    const dx = b[0] - a[0];
+    const dy = b[1] - a[1];
+    return [
+        a[0] + frac*dx,
+        a[1] + frac*dy,
+    ];
+};
+
 export const fromAToB = (a:Point, b:Point):Point=>{
     return pMinusQ(b, a);
 };

@@ -12,16 +12,16 @@ export const orderBy = (p: Array<Point>, fn:PointComparator): Array<Point> => {
 };
 
 export const orderByX = (p:Array<Point>):Array<Point>=>{
-    return orderBy(p, compX);
+    return [...p].sort(compX);
 };
 
 export const orderByY = (p:Array<Point>):Array<Point>=>{
-    return orderBy(p, compY);
+    return [...p].sort(compY);
 };
 
 export const orderByAngle = (p:Array<Point>, centre:Point):Array<Point> => {
-    return orderBy(p, getCompAngle(centre));
-}
+    return [...p].sort(getCompAngle(centre));
+};
 
 export const wrapArray = <T>(arr:Array<T>, i:number):Array<T> => {
     const r:Array<T> = [];
@@ -34,13 +34,12 @@ export const wrapArray = <T>(arr:Array<T>, i:number):Array<T> => {
 };
 
 export const getCentreOfMass = (arr:Array<Point>):Point=>{
-    let mx = 0;
-    let my = 0;
-    arr.forEach (p=>{
-        mx += p[0];
-        my += p[1];
-    });
-    return [mx/arr.length, my/arr.length];
+    const add = (p1, p2) => [
+        p1[0] + p2[0],
+        p1[1] + p2[1]
+    ];
+    const sum = arr.reduce(add, [0, 0]);
+    return [sum[0]/arr.length, sum[1]/arr.length];
 };
 
 export const getBottomLeftIndex = (arr:Array<Point>):number=>{

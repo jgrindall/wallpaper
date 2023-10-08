@@ -48,7 +48,7 @@ export const getTranslationsToCoverRect = (r:Rect, p:Rect):Array<Matrix> => {
 };
 
 export const getTranslationsToCoverPolygon = (r:Rect, p:Polygon):Array<Matrix> => {
-    const ts =  getTranslationsToCoverRect(getBoundingRect(r), getBoundingRect(p));
+    const ts = getTranslationsToCoverRect(getBoundingRect(r), getBoundingRect(p));
     return ts.filter(t => {
         const translatedR:Polygon = applyToPoints(t, r);
         return convexPolyPolyNonZeroOverlap(p, translatedR);
